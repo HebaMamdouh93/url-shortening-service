@@ -73,6 +73,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
     ast (2.4.3)
+    base62-rb (0.3.1)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.1)
@@ -316,6 +317,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  base62-rb
   bootsnap
   brakeman
   byebug
