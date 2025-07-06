@@ -25,7 +25,7 @@ module UrlShortener
     private
 
     def full_url(code)
-      "#{Rails.application.credentials[:base_url]}/#{code}"
+      "#{ENV['BASE_URL']}/#{code}"
     end
   end
 end

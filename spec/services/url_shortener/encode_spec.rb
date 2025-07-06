@@ -16,7 +16,7 @@ RSpec.describe UrlShortener::Encode do
         existing_url 
         result = service.call
 
-        expect(result).to eq("#{Rails.application.credentials[:base_url]}/existing123")
+        expect(result).to eq("#{ENV['BASE_URL']}/existing123")
         expect(Url.where(original_url: original_url).count).to eq(1)
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe UrlShortener::Encode do
       it 'creates a new Url, encodes the id, updates short_code, writes to cache, and returns full URL' do
         expect {
           result = service.call
-          expect(result).to eq("#{Rails.application.credentials[:base_url]}/#{code}")
+          expect(result).to eq("#{ENV['BASE_URL']}/#{code}")
         }.to change { Url.count }.by(1)
 
         new_url = Url.last
