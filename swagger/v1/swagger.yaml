@@ -1,0 +1,142 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/encode":
+    post:
+      summary: Encodes a long URL
+      tags:
+      - URL Shortener APIs
+      parameters: []
+      responses:
+        '200':
+          description: Shortened URL returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short_url:
+                    type: string
+                    example: http://localhost:3000/abc123
+        '400':
+          description: Bad Request (missing params)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'param is missing or the value is empty: url'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '422':
+          description: Unprocessable Entity (ShortenerError)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: https://example.com
+              required:
+              - url
+  "/api/v1/decode":
+    post:
+      summary: Decode a short URL
+      tags:
+      - URL Shortener
+      parameters: []
+      responses:
+        '200':
+          description: Original URL returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  original_url:
+                    type: string
+                    example: https://example.com
+        '400':
+          description: Bad Request (missing params)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'param is missing or the value is empty: short_url'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: URL not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Short code not found
+        '422':
+          description: Invalid short code format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid short code format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                short_url:
+                  type: string
+                  example: abc123
+              required:
+              - short_url
+servers:
+- url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []

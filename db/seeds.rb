@@ -1,9 +1,8 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+ApiClient.find_or_create_by!(name: 'Test Client') do |client|
+  api_token = "f22de332e9c829fc74907a533fa73a9a1d60a5383f64b5a64e05372879cf3ffa"
+
+  client.api_token = api_token
+end
+
+puts "Test API client created:"
+puts "  API Key: #{ApiClient.last.api_token}"

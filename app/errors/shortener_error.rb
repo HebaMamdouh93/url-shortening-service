@@ -1,0 +1,1 @@
+class ShortenerError < StandardError; end

@@ -1,0 +1,1 @@
+class UrlNotFoundError < ShortenerError; end
