@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_05_102235) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_05_145617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "api_clients", force: :cascade do |t|
+    t.string "name"
+    t.string "api_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_token"], name: "index_api_clients_on_api_token"
+  end
 
   create_table "urls", force: :cascade do |t|
     t.string "original_url"
