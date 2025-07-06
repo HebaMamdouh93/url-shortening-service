@@ -37,6 +37,7 @@ gem "thruster", require: false
 
 gem 'base62-rb', '~> 0.3.1'
 gem 'redis', '~> 5.4.0'
+gem 'rswag'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -53,4 +54,6 @@ group :development, :test do
   gem "faker", "~> 3.5.1"
   gem "factory_bot_rails", "~> 6.5.0"
   gem "byebug"
+
+  gem 'dotenv-rails', "~> 3.1.8"
 end
