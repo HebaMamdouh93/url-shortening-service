@@ -140,3 +140,32 @@ bundle exec rails rswag
 touch .env
 cp .env.example .env
 ```
+
+## Security Considerations & Potential Attack Vectors
+
+This service has the following potential security concerns:
+
+### 1. Short Code Brute Forcing
+- **Risk:** Attackers may guess valid short codes to discover URLs.
+- **Mitigation:** Codes are based on unique IDs, but longer or randomized codes could further reduce guessability. Rate limiting and monitoring can be added.
+
+### 2. Short Code Collisions
+- **Risk:** Two URLs produce the same short code.
+- **Mitigation:** Primary keys and uniqueness constraints prevent this. Short code generation is deterministic and wrapped in a transaction.
+
+### 3. Cache Poisoning
+- **Risk:** Manipulating cached mappings.
+- **Mitigation:** Cache keys are scoped and DB is always the source of truth.
+
+### 4. API Abuse / DoS
+- **Risk:** Excessive requests overwhelm the system.
+- **Mitigation:** Rate limiting, API token usage, and activity monitoring.
+
+### 5. Token Security
+- **Risk:** API tokens could be leaked or misused.
+- **Mitigation:** Use Bearer tokens securely over HTTPS and allow token revocation.
+
+### 6. Input Validation
+- **Risk:** Malformed input could break the app.
+- **Mitigation:** Strong param validation, regex URL checks, and consistent error handling.
+
