@@ -6,7 +6,7 @@ A simple, secure URL shortening service built with **Ruby on Rails 8.0.2**, **Ru
 
 ## Features
 
-✅ Encode long URLs to short, unique Base62 short codes  
+✅ Encode long URLs to short, unique hashids or Base62 short codes  
 ✅ Decode short codes back to original URLs  
 ✅ Token-based API authentication (`Authorization: Bearer <api_token>`)  
 ✅ Redis caching for fast lookups  
@@ -141,6 +141,9 @@ touch .env
 cp .env.example .env
 ```
 
+- Set HASHID_SALT environment variable in .env file.
+- **Generate a random salt using this command `ruby -rsecurerandom -e 'puts SecureRandom.hex(16)'` and set it in the .env file.**
+
 ## Security Considerations & Potential Attack Vectors
 
 This service has the following potential security concerns:
@@ -168,4 +171,23 @@ This service has the following potential security concerns:
 ### 6. Input Validation
 - **Risk:** Malformed input could break the app.
 - **Mitigation:** Strong param validation, regex URL checks, and consistent error handling.
+
+
+## Scalability
+
+This URL shortener uses:
+- **Hashids** with a secret salt to generate unique, obfuscated short codes.
+- **Redis caching** for low-latency lookups.
+- DB-level constraints to prevent collisions.
+
+### How It Scales:
+- **Multiple App Servers**: Scale out behind a load balancer.
+- **Read Replicas**: Scale DB reads for high traffic.
+- **Redis Cache**: Reduce DB load for hot links.
+- **Monitoring**: Track usage, detect abuse.
+- **Rate Limiting**: Protect against brute-force attacks.
+- **Edge Delivery**: Use CDN or geo-distributed DBs for low latency worldwide.
+- **Predictability Mitigation**: Hashids obfuscate sequential IDs to prevent guessable short codes.
+
+This ensures each short code stays unique, reliable, and secure even at massive scale.
 
