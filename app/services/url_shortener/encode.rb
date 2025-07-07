@@ -1,7 +1,7 @@
 module UrlShortener
   class Encode
     include CacheKeyHelper
-    def initialize(original_url:, encoder: Base62Encoder, cache: CacheService)
+    def initialize(original_url:, encoder: HashidsEncoder, cache: CacheService)
       @original_url = original_url
       @encoder = encoder
       @cache = cache

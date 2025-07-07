@@ -6,7 +6,7 @@ A simple, secure URL shortening service built with **Ruby on Rails 8.0.2**, **Ru
 
 ## Features
 
-✅ Encode long URLs to short, unique Base62 short codes  
+✅ Encode long URLs to short, unique hashids or Base62 short codes  
 ✅ Decode short codes back to original URLs  
 ✅ Token-based API authentication (`Authorization: Bearer <api_token>`)  
 ✅ Redis caching for fast lookups  
@@ -140,3 +140,54 @@ bundle exec rails rswag
 touch .env
 cp .env.example .env
 ```
+
+- Set HASHID_SALT environment variable in .env file.
+- **Generate a random salt using this command `ruby -rsecurerandom -e 'puts SecureRandom.hex(16)'` and set it in the .env file.**
+
+## Security Considerations & Potential Attack Vectors
+
+This service has the following potential security concerns:
+
+### 1. Short Code Brute Forcing
+- **Risk:** Attackers may guess valid short codes to discover URLs.
+- **Mitigation:** Codes are based on unique IDs, but longer or randomized codes could further reduce guessability. Rate limiting and monitoring can be added.
+
+### 2. Short Code Collisions
+- **Risk:** Two URLs produce the same short code.
+- **Mitigation:** Primary keys and uniqueness constraints prevent this. Short code generation is deterministic and wrapped in a transaction.
+
+### 3. Cache Poisoning
+- **Risk:** Manipulating cached mappings.
+- **Mitigation:** Cache keys are scoped and DB is always the source of truth.
+
+### 4. API Abuse / DoS
+- **Risk:** Excessive requests overwhelm the system.
+- **Mitigation:** Rate limiting, API token usage, and activity monitoring.
+
+### 5. Token Security
+- **Risk:** API tokens could be leaked or misused.
+- **Mitigation:** Use Bearer tokens securely over HTTPS and allow token revocation.
+
+### 6. Input Validation
+- **Risk:** Malformed input could break the app.
+- **Mitigation:** Strong param validation, regex URL checks, and consistent error handling.
+
+
+## Scalability
+
+This URL shortener uses:
+- **Hashids** with a secret salt to generate unique, obfuscated short codes.
+- **Redis caching** for low-latency lookups.
+- DB-level constraints to prevent collisions.
+
+### How It Scales:
+- **Multiple App Servers**: Scale out behind a load balancer.
+- **Read Replicas**: Scale DB reads for high traffic.
+- **Redis Cache**: Reduce DB load for hot links.
+- **Monitoring**: Track usage, detect abuse.
+- **Rate Limiting**: Protect against brute-force attacks.
+- **Edge Delivery**: Use CDN or geo-distributed DBs for low latency worldwide.
+- **Predictability Mitigation**: Hashids obfuscate sequential IDs to prevent guessable short codes.
+
+This ensures each short code stays unique, reliable, and secure even at massive scale.
+
