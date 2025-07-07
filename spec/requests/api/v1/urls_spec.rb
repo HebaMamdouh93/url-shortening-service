@@ -28,7 +28,7 @@ RSpec.describe "Api::V1::Urls", type: :request do
 
     context "when URL already exists" do
       it "returns the existing short URL" do
-        url = create(:url, :with_short_code, original_url: "https://example.com")
+        url = create(:url, :with_hashids_short_code, original_url: "https://example.com")
         post "/api/v1/encode",
           params: { url: "https://example.com" }.to_json,
           headers: headers
@@ -65,7 +65,7 @@ RSpec.describe "Api::V1::Urls", type: :request do
   describe "POST /api/v1/decode" do
     context "with valid short code" do
       it "returns the original URL" do
-        url = create(:url, :with_short_code, original_url: "https://example.com")
+        url = create(:url, :with_hashids_short_code, original_url: "https://example.com")
         post "/api/v1/decode",
           params: { short_url: url.short_code }.to_json,
           headers: headers

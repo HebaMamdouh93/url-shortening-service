@@ -3,7 +3,7 @@ require 'swagger_helper'
 RSpec.describe 'URL Shortener APIS', type: :request do
   let(:api_client) { create(:api_client, name: 'API Client 1') }
   let(:Authorization) { "Bearer #{api_client.api_token}" }
-  let(:url) { create(:url, :with_short_code ) }
+  let(:url) { create(:url, :with_hashids_short_code ) }
 
   path '/api/v1/encode' do
     post 'Encodes a long URL' do
