@@ -36,7 +36,7 @@ gem "thruster", require: false
 # gem "rack-cors"
 
 gem 'base62-rb', '~> 0.3.1'
-gem 'redis', '~> 5.4.0'
+gem 'redis', '~> 5.4.1'
 gem 'rswag'
 gem 'hashids', '~> 1.0.6'
 
